@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Users DB</title>
+    <title>Login</title>
     <style type="text/css">
         .parent {
             width: 100%;
@@ -18,12 +18,6 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-        }
-
-        .logout {
-            position: absolute;
-            top: 20%;
-            left: 50%;
         }
 
         body {
@@ -47,8 +41,6 @@
             text-align: center;
             font-weight: 900;
             color: lightslategrey;
-            margin-left: 10px;
-            margin-right: 10px;
         }
 
 
@@ -57,34 +49,39 @@
 
 <body>
 <div class="parent">
-
-    <div class="logout">
-        <form action="/logout">
-            <input type="submit" value="Logout">
-        </form>
-    </div>
     <div class="block">
-        <h2>INFO PAGE FOR : </h2>
+        <h1> Login </h1>
         <table>
+            <form th:action="@{/login}" method="post">
+                <div style="color: #ff0008" th:if = "${param.error}">
+                    Error
+                </div>
+
                 <tr>
-                    <td><label>ID:</label></td>
-                    <td th:text="${user.getId()}">id</td>
+                    <td><label for="username">Login :</label></td>
+                    <td><input type="text" id="username" name="username" placeholder="Login"/></td>
                 </tr>
 
                 <tr>
-                    <td><label>First name:</label></td>
-                    <td th:text="${user.getFirstName()}">First Name</td>
+                    <td><label for="password">Password :</label></td>
+                    <td><input type="password" id="password" name="password" placeholder="Password"/></td>
                 </tr>
-
                 <tr>
-                    <td><label>Last name:</label></td>
-                    <td th:text="${user.getLastName()}">Last Name</td>
-                </tr>
+                    <td><input type="submit" value="Login"></td>
+
+            </form>
+            <td>
+                <form action="/create">
+                    <input type="submit" value="Registration">
+                </form>
+            </td>
+            </tr>
 
         </table>
+
     </div>
 </div>
-
+</div>
 
 </body>
 </html>
