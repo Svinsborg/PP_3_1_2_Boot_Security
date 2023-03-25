@@ -19,16 +19,14 @@ public class RoleDaoImpl implements RoleDao{
     public Role findRole(String role) {
         TypedQuery<Role> roles = entityManager.createQuery("FROM Role r WHERE r.role=:role", Role.class);
         roles.setParameter("role", role);
-
         System.out.println("Method FindRole ---->>>> " + roles);
         return roles.getSingleResult();
     }
 
     @Override
     public Role findRoleByID(Long id){
-        TypedQuery<Role> user = entityManager.createQuery("FROM Role r WHERE r.id=:id", Role.class);
-        user.setParameter("id", id);
-        return user.getResultList().stream().findAny().orElse(null);
+        Role role = entityManager.find(Role.class, id);
+        return role;
     }
 
     @Override

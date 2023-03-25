@@ -3,12 +3,10 @@ package ru.kata.spring.boot_security.demo.dao;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -30,15 +28,17 @@ public class UserDaoEMImpl implements UserDao {
 
     @Override
     public User findById(Long id) {
-        TypedQuery<User> user = entityManager.createQuery("FROM User u WHERE u.id=:id", User.class);
-        user.setParameter("id", id);
-        return user.getResultList().stream().findAny().orElse(null);
+        User user1 = entityManager.find(User.class, id) ;
+//        TypedQuery<User> user = entityManager.createQuery("FROM User u WHERE u.id=:id", User.class);
+//        user.setParameter("id", id);
+//        return user.getResultList().stream().findAny().orElse(null);
+        return user1;
     }
 
     public Optional<User> findByUserName(String name){
         Query jpqlQuery = (Query) entityManager.createQuery("FROM User u WHERE u.firstName=:name", User.class);
         jpqlQuery.setParameter("name", name);
-        Optional first = jpqlQuery.getResultList().stream().findFirst();
+        Optional<User> first = jpqlQuery.getResultList().stream().findFirst();
         System.out.println("Repo Optional repport  --- >>>>  " + first);
         return first;
     }
@@ -49,7 +49,6 @@ public class UserDaoEMImpl implements UserDao {
     }
 
     @Override
-    @Transactional
     public void saveUser(String firstName, String lastName, String password) {
         Set<Role> role = new HashSet<>();
         role.add(roleDao.findRole("USER"));
@@ -59,14 +58,12 @@ public class UserDaoEMImpl implements UserDao {
     }
 
     @Override
-    @Transactional
     public void updateUser(User user){
         System.out.println("Method updateUser report ----- >> for user = " + user);
         entityManager.merge(user);
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
         User user = findById(id);
         entityManager.remove(user);

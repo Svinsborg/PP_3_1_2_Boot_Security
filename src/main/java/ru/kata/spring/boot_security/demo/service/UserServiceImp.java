@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.dao.UserDaoEMImpl;
-import ru.kata.spring.boot_security.demo.dto.DtoUserAuthorization;
 import ru.kata.spring.boot_security.demo.model.User;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -70,8 +67,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("User not found by name = " + username);
         }
         System.out.println("Service repport --- >>>>  " + user);
-        UserDetails ud = new DtoUserAuthorization(user.get());
-        System.out.println(ud.getAuthorities().toString());
+        UserDetails ud = new User(user.get());
+        System.out.println("########## Get Authorities ------ >>>>>> " + ud.getAuthorities().toString());
         return ud;
     }
 }

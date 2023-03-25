@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dao.RoleDao;
-import ru.kata.spring.boot_security.demo.dto.DtoUserAuthorization;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.Optional;
@@ -18,13 +17,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final RoleDao roleDao;
 
 
     @Autowired
     public UserController(UserService userService, RoleDao roleDao) {
         this.userService = userService;
-        this.roleDao = roleDao;
     }
 
 
@@ -37,9 +34,9 @@ public class UserController {
     @GetMapping(value = {"/", "/index", "/users", "/user"})
     public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        DtoUserAuthorization ua = (DtoUserAuthorization) authentication.getPrincipal();
-        System.out.println("############### User Details printing ---- >>>>>> " + ua.getUsername() + "   ################");
-        Optional<User> user = userService.findByUserName(ua.getUsername());
+        User us = (User) authentication.getPrincipal();
+        System.out.println("############### User Details printing ---- >>>>>> " + us.getUsername() + "   ################");
+        Optional<User> user = userService.findByUserName(us.getUsername());
         System.out.println("############### User Details printing ---- >>>>>> " + user + "   ################");
         model.addAttribute("user", user.get());
         return "/user";
