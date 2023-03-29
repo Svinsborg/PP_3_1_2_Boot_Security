@@ -33,11 +33,6 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return   id + " " + role ;
-    }
-
 
     @Override
     public int hashCode() {
@@ -67,5 +62,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return this.role;
+    }
+
+    @Override
+    public String toString() {
+        return role;
     }
 }

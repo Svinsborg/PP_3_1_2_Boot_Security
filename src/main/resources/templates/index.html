@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    <link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Users DB</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <!-- Navbar content -->
+    <div class="container-fluid">
+        <h3 class="navbar-brand col-md-3 col-lg-2 mr-3 px-xxl-1"><span th:text="${account.firstName}">USER</span>
+            <span style="font-weight: lighter;">with roles:</span>
+            <span style="font-weight: lighter;" th:text="${account.roleToString()}">ROLES</span></h3>
+        <a class="logout" style="color: grey; text-decoration: none" href="/logout">Logout</a>
+    </div>
+</nav>
+<div style="margin-bottom: 10px">
+</div>
+
+<div class="d-flex align-items-start">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active" id="v-pills-user-tab" data-bs-toggle="pill" data-bs-target="#v-pills-user"
+                type="button" role="tab" aria-controls="v-pills-user" aria-selected="false">User
+        </button>
+    </div>
+
+        <div style="width:100%" class="tab-pane" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+            <div class="block">
+                <h2>User information-page</h2>
+                <div class="tab-content" id="accountTabContent">
+                    <div class="tab-pane fade show active" id="tableAccount" role="tabpanel"
+                         aria-labelledby="table-tab">
+                        <div class="card" style="width: 100%;">
+                            <div class="card-header">
+                                All users
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+
+
+                                    <table class="table table table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Role</th>
+                                        </tr>
+                                        </thead>
+                                        <tr>
+                                            <td th:text="${account.id}">id</td>
+                                            <td th:text="${account.firstName}">First Name</td>
+                                            <td th:text="${account.lastName}">Last Name</td>
+                                            <td th:text="${account.roleToString()}"> Role</td>
+
+                                        </tr>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+</body>
+</html>

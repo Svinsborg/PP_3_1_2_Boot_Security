@@ -132,6 +132,14 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public String roleToString(){
+        StringBuilder sb = new StringBuilder();
+        for(Role role: roles){
+            sb.append(role.getRole()).append(" ");
+        }
+        return sb.toString();
+    }
+
 
 
 

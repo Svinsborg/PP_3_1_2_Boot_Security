@@ -1,15 +1,15 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -29,7 +29,14 @@ public class AdminController {
 
     @GetMapping(value = {"/", "/index", ""})
     public String administration(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User us = (User) authentication.getPrincipal();
+        Optional<User> user = userService.findByUserName(us.getUsername());
+        model.addAttribute("account", user.get());
+
+
+        model.addAttribute("usersList", userService.getAllUsers());
+        model.addAttribute("allRoles", roleService.findAll());
         return "/admin/index";
     }
 
@@ -63,24 +70,29 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") Long id, Model model) {
-        User user = userService.findById(id);
-        if (user == null) {
-            model.addAttribute("msg", "User not found");
-            return "err/warning";
-        } else {
-            List<Role> roles = roleService.findAll();
-            model.addAttribute("user", user);
-            model.addAttribute("allRoles", roles);
-            return "admin/update";
-        }
-    }
-
     @PatchMapping("/update")
     public String update(@ModelAttribute("user") User user) {
         System.out.println(user);
         userService.updateUser(user);
         return "redirect:/admin";
+    }
+
+    @PostMapping("/create")
+    public String saveUser(@RequestParam("firstName") String name,
+                           @RequestParam("lastName") String lastName,
+                           @RequestParam("password") String password,
+                           Model model) {
+        if (name == "" && lastName == "" && password =="") {
+            model.addAttribute("msg", "All fields must be filled!");
+            return "/err/warning";
+        }
+        Optional<User> user = userService.findByUserName(name);
+        if (user.isPresent()) {
+            model.addAttribute("msg", "The user already exists!");
+            return "/err/warning";
+        } else {
+            userService.saveUser(name, lastName, password);
+            return "redirect:/admin/index";
+        }
     }
 }

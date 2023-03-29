@@ -38,32 +38,8 @@ public class UserController {
         System.out.println("############### User Details printing ---- >>>>>> " + us.getUsername() + "   ################");
         Optional<User> user = userService.findByUserName(us.getUsername());
         System.out.println("############### User Details printing ---- >>>>>> " + user + "   ################");
-        model.addAttribute("user", user.get());
-        return "/user";
+        model.addAttribute("account", user.get());
+        return "/index";
     }
 
-
-    @GetMapping("/create")
-    public String createUser() {
-        return "create";
-    }
-
-    @PostMapping("/create")
-    public String saveUser(@RequestParam("firstName") String name,
-                           @RequestParam("lastName") String lastName,
-                           @RequestParam("password") String password,
-                           Model model) {
-        if (name == "" && lastName == "" && password =="") {
-            model.addAttribute("msg", "All fields must be filled!");
-            return "create";
-        }
-        Optional<User> user = userService.findByUserName(name);
-        if (user.isPresent()) {
-            model.addAttribute("msg", "The user already exists!");
-            return "create";
-        } else {
-            userService.saveUser(name, lastName, password);
-            return "redirect:/login";
-        }
-    }
 }
