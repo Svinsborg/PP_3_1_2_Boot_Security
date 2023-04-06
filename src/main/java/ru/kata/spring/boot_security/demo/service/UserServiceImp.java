@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.dao.UserDaoEMImpl;
+import ru.kata.spring.boot_security.demo.excption.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public User findById(Long id) {
-        return userDao.findById(id);
+        User user = userDao.findById(id);
+        if (user != null) {
+            return user;
+        } else {
+            throw  new UserNotFoundException();
+        }
     }
 
     @Override
@@ -33,12 +39,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userDao.getAllUsers();
     }
 
-
-
     @Override
     @Transactional
     public void saveUser(String firstName, String lastName, String password) {
         userDao.saveUser(firstName, lastName, password);
+    }
+
+    @Override
+    @Transactional
+    public void createUser(User user){
+        userDao.createUser(user);
     }
 
     @Override

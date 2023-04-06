@@ -12,6 +12,8 @@ public interface UserService {
 
     void saveUser(String firstName, String lastName, String password);
 
+    void createUser(User user);
+
     void updateUser(User user);
 
     void deleteById(Long id);

@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--    <link href="css/bootstrap.min.css" rel="stylesheet">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Users DB</title>
@@ -14,9 +13,10 @@
 <nav class="navbar navbar-dark bg-dark">
     <!-- Navbar content -->
     <div class="container-fluid">
-        <h3 class="navbar-brand col-md-3 col-lg-2 mr-3 px-xxl-1"><span th:text="${account.firstName}">USER</span>
-            <span style="font-weight: lighter;">with roles:</span>
-            <span style="font-weight: lighter;" th:text="${account.roleToString()}">ROLES</span></h3>
+        <h3 class="navbar-brand col-md-3 col-lg-2 mr-3 px-xxl-1" >
+            <div id="navBarInfo">
+            </div>
+        </h3>
         <a class="logout" style="color: grey; text-decoration: none" href="/logout">Logout</a>
     </div>
 </nav>
@@ -42,8 +42,6 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
-
-
                                     <table class="table table table-striped table-hover">
                                         <thead>
                                         <tr>
@@ -53,13 +51,8 @@
                                             <th scope="col">Role</th>
                                         </tr>
                                         </thead>
-                                        <tr>
-                                            <td th:text="${account.id}">id</td>
-                                            <td th:text="${account.firstName}">First Name</td>
-                                            <td th:text="${account.lastName}">Last Name</td>
-                                            <td th:text="${account.roleToString()}"> Role</td>
-
-                                        </tr>
+                                        <tbody id="userInfoPage">
+                                        </tbody>
                                     </table>
                                 </li>
                             </ul>
@@ -70,9 +63,15 @@
         </div>
 </div>
 
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="/static/js/showUserInfo.js"></script>
 </body>
 </html>

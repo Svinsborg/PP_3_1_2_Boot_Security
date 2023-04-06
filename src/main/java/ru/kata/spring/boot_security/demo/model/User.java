@@ -6,6 +6,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -17,12 +21,14 @@ public class User implements UserDetails {
     private Long id = 0L;
 
     @Column(name = "first_name")
+    @NotBlank(message = "Name ot empty!")
+    @Size(min = 3, max = 15, message = "Name 3 do 15 char")
     private String firstName;
-
     @Column(name = "last_name")
     private String lastName;
-
     @Column(name = "password")
+    @NotBlank(message = "Pass not empty!")
+    @Size(min = 3, max = 15, message = "Pass 3 do 15 char")
     private String password;
 
     @ManyToMany(cascade = {

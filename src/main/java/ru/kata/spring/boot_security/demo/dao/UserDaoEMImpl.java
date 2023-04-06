@@ -28,11 +28,8 @@ public class UserDaoEMImpl implements UserDao {
 
     @Override
     public User findById(Long id) {
-        User user1 = entityManager.find(User.class, id) ;
-//        TypedQuery<User> user = entityManager.createQuery("FROM User u WHERE u.id=:id", User.class);
-//        user.setParameter("id", id);
-//        return user.getResultList().stream().findAny().orElse(null);
-        return user1;
+        User user = entityManager.find(User.class, id) ;
+        return user;
     }
 
     public Optional<User> findByUserName(String name){
@@ -41,6 +38,14 @@ public class UserDaoEMImpl implements UserDao {
         Optional<User> first = jpqlQuery.getResultList().stream().findFirst();
         System.out.println("Repo Optional repport  --- >>>>  " + first);
         return first;
+    }
+
+    @Override
+    public void createUser(User user){
+        Set<Role> role = new HashSet<>();
+        role.add(roleDao.findRole("USER"));
+        user.setRoles(role);
+        entityManager.persist(user);
     }
 
     @Override
@@ -60,6 +65,11 @@ public class UserDaoEMImpl implements UserDao {
     @Override
     public void updateUser(User user){
         System.out.println("Method updateUser report ----- >> for user = " + user);
+        if(user.getRoles().isEmpty()){
+            Set<Role> role = new HashSet<>();
+            role.add(roleDao.findRole("USER"));
+            user.setRoles(role);
+        }
         entityManager.merge(user);
     }
 
