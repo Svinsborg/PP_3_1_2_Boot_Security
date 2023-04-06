@@ -87,12 +87,6 @@ public class AdminRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/viewUser")
-    public ResponseEntity<User> showUser(Principal principal) {
-        Optional<User> user = userService.findByUserName(principal.getName());
-        return ResponseEntity.ok(user.get());
-    }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
