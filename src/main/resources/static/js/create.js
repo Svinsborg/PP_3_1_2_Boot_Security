@@ -17,7 +17,7 @@ loadRoles()
 
 $('#createUser').click(async function (e) {
     console.log("Saved!")
-    e.preventDefault();
+    //e.preventDefault();
     let url = '/api/v1/user/'
     let createUser = $('#editUser')
     let msg = $('#errorCreate')
