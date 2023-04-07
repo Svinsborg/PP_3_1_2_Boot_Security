@@ -1,16 +1,43 @@
-$('#createUser').click(async function () {
+async function loadRoles() {
+await $.get({
+    url: '/api/v1/user/roles',
+    success: (roles) => {
+        console.log( roles.map)
+        roles.forEach(r =>{
+            $('#select-roles').append(`
+                                     <option 
+                                     value="${r.id}">
+                                            ${r.role}
+                                     </option>`);
+        })
+    }
+})
+}
+loadRoles()
+
+$('#createUser').click(async function (e) {
+    e.preventDefault();
     console.log("Saved!")
     let url = '/api/v1/user/'
     let createUser = $('#editUser')
     let msg = $('#errorCreate')
     let checkByName
+    let id = $('#select-roles').val()
+    let role = $('#select-roles option:selected').text()
+
     console.log(createUser)
     let user =
         {
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val(),
             password: $('#password').val(),
+            roles: [
+                {
+                id: id[0]
+            }
+        ]
         };
+    console.log(user)
 
     await $.get({
         url: '/api/v1/user/name/' + user.firstName,
@@ -19,6 +46,8 @@ $('#createUser').click(async function () {
             console.log("Check by name = " + checkByName)
         },
     });
+
+
 
 
     if(checkByName === true){
@@ -51,7 +80,8 @@ $('#createUser').click(async function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function () {
-            location.reload();
+            $('.list-users').empty()
+            showAjax()
         },
         error: (err) => {
             alert(err);

@@ -25,17 +25,20 @@ $('#deletUser').on('shown.bs.modal', function (event){
     }
 })
 
-$('#delUserButton').click( function () {
+$('#delUserButton').click( function (e) {
     let modal = $('#deletUser')
     let userId = modal.find('#delUserid').val()
+    e.preventDefault();
     $.ajax({
         url: '/api/v1/user/' + userId,
         type: 'DELETE',
         success: function(){
-            location.reload();
+            $('.list-users').empty()
+            showAjax()
         },
         error: function (response) {
             alert(response.status + ' ' + response.statusText);
         }
     });
+    modal.modal('hide');
 });

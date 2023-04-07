@@ -19,7 +19,6 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +71,8 @@ public class AdminRestController {
     @PostMapping()
     public ResponseEntity<HttpStatus> userCreate(@Valid @RequestBody UserDTO userDTO,
                                                  BindingResult bindingResult) {
+        System.out.println(bindingResult);
+        System.out.println(userDTO);
         if (bindingResult.hasErrors()) {
             StringBuilder errMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();

@@ -2,11 +2,12 @@ $('#editUser').on('shown.bs.modal', function (event){
     const button = event.relatedTarget
     const userid = button.getAttribute('data-bs-userId')
     console.log(userid)
-
+    event.preventDefault();
     if (userid) {
         $.get({
             url: '/api/v1/user/' + userid,
             success: (data) => {
+                console.log(data)
                 $.get({
                         url: '/api/v1/user/roles',
                     success: (roles) => {
@@ -33,10 +34,11 @@ $('#editUser').on('shown.bs.modal', function (event){
     }
 })
 //
-$('#saveUserButton').click(async function () {
+$('#saveUserButton').click(async function (e) {
     let modal = $('#editUser')
     let rolesId = Number($('#edit-roles').val());
     let user;
+    e.preventDefault();
     await $.getJSON({
         url: '/api/v1/user/roles/' + rolesId
     })
@@ -67,7 +69,8 @@ $('#saveUserButton').click(async function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(){
-            location.reload();
+            $('.list-users').empty()
+            showAjax()
         },
         error: (err) => {
             alert(err);
