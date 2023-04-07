@@ -19,7 +19,6 @@ public class RoleDaoImpl implements RoleDao{
     public Role findRole(String role) {
         TypedQuery<Role> roles = entityManager.createQuery("FROM Role r WHERE r.role=:role", Role.class);
         roles.setParameter("role", role);
-        System.out.println("Method FindRole ---->>>> " + roles);
         return roles.getSingleResult();
     }
 

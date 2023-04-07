@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserDaoEMImpl implements UserDao {
@@ -42,9 +43,12 @@ public class UserDaoEMImpl implements UserDao {
 
     @Override
     public void createUser(User user){
+        System.out.println("Это пришло! ------ >>>>>>>>>>>>> " + user);
         Set<Role> role = new HashSet<>();
-        role.add(roleDao.findRole("USER"));
+        user.getRoles().forEach(e -> role.add(roleDao.findRole(String.valueOf(e))));
+        user.setRoles(null);
         user.setRoles(role);
+        System.out.println("Это сохраняем! ------ >>>>>>>>>>>>> " + user);
         entityManager.persist(user);
     }
 
@@ -64,7 +68,7 @@ public class UserDaoEMImpl implements UserDao {
 
     @Override
     public void updateUser(User user){
-        System.out.println("Method updateUser report ----- >> for user = " + user);
+        System.out.println("Это изменяем! ------ >>>>>>>>>>>>> " + user);
         if(user.getRoles().isEmpty()){
             Set<Role> role = new HashSet<>();
             role.add(roleDao.findRole("USER"));

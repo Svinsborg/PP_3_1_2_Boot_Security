@@ -71,8 +71,6 @@ public class AdminRestController {
     @PostMapping()
     public ResponseEntity<HttpStatus> userCreate(@Valid @RequestBody UserDTO userDTO,
                                                  BindingResult bindingResult) {
-        System.out.println(bindingResult);
-        System.out.println(userDTO);
         if (bindingResult.hasErrors()) {
             StringBuilder errMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -84,6 +82,7 @@ public class AdminRestController {
             }
             throw new UserNotCreateException(errMsg.toString());
         }
+        System.out.println("User DTO --------- >>>>>>>>>>>>  " + userDTO);
         userService.createUser(convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }

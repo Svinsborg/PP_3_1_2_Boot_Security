@@ -146,9 +146,6 @@ public class User implements UserDetails {
         return sb.toString();
     }
 
-
-
-
     @Override
     public String toString() {
         return "User{" +

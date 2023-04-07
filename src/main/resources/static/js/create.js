@@ -16,15 +16,14 @@ await $.get({
 loadRoles()
 
 $('#createUser').click(async function (e) {
-    e.preventDefault();
     console.log("Saved!")
+    e.preventDefault();
     let url = '/api/v1/user/'
     let createUser = $('#editUser')
     let msg = $('#errorCreate')
     let checkByName
     let id = $('#select-roles').val()
-    let role = $('#select-roles option:selected').text()
-
+    let role = $('#select-roles option:selected').text().replace(/[^a-zа-яё]/gi, '')
     console.log(createUser)
     let user =
         {
@@ -33,8 +32,10 @@ $('#createUser').click(async function (e) {
             password: $('#password').val(),
             roles: [
                 {
-                id: id[0]
-            }
+                id: parseInt(id[0]),
+                role: role,
+                authority: role
+                }
         ]
         };
     console.log(user)
