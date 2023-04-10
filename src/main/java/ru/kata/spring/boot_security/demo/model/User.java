@@ -1,13 +1,10 @@
 package ru.kata.spring.boot_security.demo.model;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -42,7 +39,6 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-
     public User(String firstName, String lastName, String password, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,7 +55,6 @@ public class User implements UserDetails {
         this.password = user.getPassword();
         this.roles = user.getRoles();
     }
-
 
     public Long getId() {
         return id;

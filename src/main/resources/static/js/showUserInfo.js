@@ -1,5 +1,4 @@
 async function showUser() {
-    console.log("Start content for USER")
     const url = '/api/v2/user/viewUser'
     let pageInfo = $('#userInfoPage')
     let navbar = $('#navBarInfo')
@@ -8,8 +7,6 @@ async function showUser() {
         url: url
     })
         .done(function (data) {
-            console.log("Date for USER")
-            console.log(data)
             navbar.append(`
                         <span >${data.firstName}</span>
                         <span style="font-weight: lighter;">with roles:</span>

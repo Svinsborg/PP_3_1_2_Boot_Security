@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +12,15 @@ import ru.kata.spring.boot_security.demo.dto.UserDTO;
 import ru.kata.spring.boot_security.demo.excption.UserErrors;
 import ru.kata.spring.boot_security.demo.excption.UserNotCreateException;
 import ru.kata.spring.boot_security.demo.excption.UserNotFoundException;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.dto.utils.Converter;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -28,24 +28,25 @@ public class AdminRestController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final ModelMapper modelMapper;
+    private final Converter converter;
+
 
     @Autowired
-    public AdminRestController(UserService userService, RoleService roleService, ModelMapper modelMapper) {
+    public AdminRestController(UserService userService, RoleService roleService, Converter converter) {
         this.userService = userService;
         this.roleService = roleService;
-        this.modelMapper = modelMapper;
+        this.converter = converter;
     }
 
     @GetMapping("/roles/{id}")
     public RoleDTO getRoleByID(@PathVariable Long id) {
-        return convertToRoleDTO(roleService.findRoleByID(id));
+        return converter.convertToRoleDTO(roleService.findRoleByID(id));
     }
 
     @GetMapping("/roles")
     public List<RoleDTO> getAllRole() {
         return roleService.findAll().stream()
-                .map(this::convertToRoleDTO)
+                .map(converter::convertToRoleDTO)
                 .toList();
     }
 
@@ -53,13 +54,13 @@ public class AdminRestController {
     @GetMapping()
     public List<UserDTO> getAll() {
         return userService.getAllUsers().stream()
-                .map(this::convertToUserDTO)
+                .map(converter::convertToUserDTO)
                 .toList();
     }
 
     @GetMapping("/{id}")
     public UserDTO getById(@PathVariable("id") Long id) {
-        return convertToUserDTO(userService.findById(id));
+        return converter.convertToUserDTO(userService.findById(id));
     }
 
     @GetMapping("/name/{name}")
@@ -82,8 +83,7 @@ public class AdminRestController {
             }
             throw new UserNotCreateException(errMsg.toString());
         }
-        System.out.println("User DTO --------- >>>>>>>>>>>>  " + userDTO);
-        userService.createUser(convertToUser(userDTO));
+        userService.createUser(converter.convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -95,26 +95,11 @@ public class AdminRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
     @PatchMapping("/")
     public ResponseEntity<HttpStatus> update(@Valid @RequestBody UserDTO userDTO) {
-        System.out.println("PATCH Json Object ------- >>>>>>>>> " + userDTO);
         userService.findById(userDTO.getId());
-        System.out.println("Converter print ------>>>>>>  " + convertToUser(userDTO));
-        userService.updateUser(convertToUser(userDTO));
+        userService.updateUser(converter.convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    private UserDTO convertToUserDTO(User user) {
-        return modelMapper.map(user, UserDTO.class);
-    }
-
-    private User convertToUser(UserDTO user) {
-        return modelMapper.map(user, User.class);
-    }
-
-    private RoleDTO convertToRoleDTO(Role role){
-        return modelMapper.map(role, RoleDTO.class);
     }
 
     @ExceptionHandler

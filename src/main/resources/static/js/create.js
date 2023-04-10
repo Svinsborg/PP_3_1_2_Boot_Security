@@ -2,7 +2,6 @@ async function loadRoles() {
 await $.get({
     url: '/api/v1/user/roles',
     success: (roles) => {
-        console.log( roles.map)
         roles.forEach(r =>{
             $('#select-roles').append(`
                                      <option 
@@ -15,16 +14,13 @@ await $.get({
 }
 loadRoles()
 
-$('#createUser').click(async function (e) {
-    console.log("Saved!")
-    //e.preventDefault();
+$('#createUser').click(async function () {
     let url = '/api/v1/user/'
     let createUser = $('#editUser')
     let msg = $('#errorCreate')
     let checkByName
     let id = $('#select-roles').val()
     let role = $('#select-roles option:selected').text().replace(/[^a-zа-яё]/gi, '')
-    console.log(createUser)
     let user =
         {
             firstName: $('#firstName').val(),
@@ -38,18 +34,13 @@ $('#createUser').click(async function (e) {
                 }
         ]
         };
-    console.log(user)
 
     await $.get({
         url: '/api/v1/user/name/' + user.firstName,
         success: (data) => {
             checkByName = data
-            console.log("Check by name = " + checkByName)
         },
     });
-
-
-
 
     if(checkByName === true){
         msg.text("User with name exists")
@@ -72,7 +63,6 @@ $('#createUser').click(async function (e) {
 
     msg.text("")
     msg.hide();
-    console.log(user)
 
     $.ajax({
         url: url,

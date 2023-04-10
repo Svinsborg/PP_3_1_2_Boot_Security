@@ -1,17 +1,14 @@
 $('#editUser').on('shown.bs.modal', function (event){
     const button = event.relatedTarget
     const userid = button.getAttribute('data-bs-userId')
-    console.log(userid)
     event.preventDefault();
     if (userid) {
         $.get({
             url: '/api/v1/user/' + userid,
             success: (data) => {
-                console.log(data)
                 $.get({
                         url: '/api/v1/user/roles',
                     success: (roles) => {
-                        console.log( roles.map)
                         roles.forEach(r =>{
                             modal.find('#edit-roles').append(`
                                      <option 

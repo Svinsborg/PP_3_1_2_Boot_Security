@@ -6,22 +6,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.dao.UserDaoEMImpl;
 import ru.kata.spring.boot_security.demo.excption.UserNotFoundException;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service()
 public class UserServiceImp implements UserService, UserDetailsService {
 
     private final UserDao userDao;
+    private final RoleDao roleDao;
 
     @Autowired
-    public UserServiceImp(UserDaoEMImpl userDaoImp) {
+    public UserServiceImp(UserDaoEMImpl userDaoImp, RoleDao roleDao) {
         this.userDao = userDaoImp;
+        this.roleDao = roleDao;
     }
 
     @Override
@@ -41,13 +48,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void saveUser(String firstName, String lastName, String password) {
-        userDao.saveUser(firstName, lastName, password);
-    }
-
-    @Override
-    @Transactional
     public void createUser(User user){
+        Set<Role> role = new HashSet<>();
+        user.getRoles().forEach(e -> role.add(roleDao.findRole(String.valueOf(e))));
+        user.setRoles(null);
+        user.setRoles(role);
         userDao.createUser(user);
     }
 
@@ -68,48 +73,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userDao.findByUserName(name);
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         Optional<User> user = userDao.findByUserName(username);
         if (user.isEmpty()){
             throw new UsernameNotFoundException("User not found by name = " + username);
         }
-        System.out.println("Service repport --- >>>>  " + user);
         UserDetails ud = new User(user.get());
-        System.out.println("########## Get Authorities ------ >>>>>> " + ud.getAuthorities().toString());
         return ud;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

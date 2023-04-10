@@ -10,8 +10,6 @@ public interface UserService {
     User findById(Long id);
     List<User> getAllUsers();
 
-    void saveUser(String firstName, String lastName, String password);
-
     void createUser(User user);
 
     void updateUser(User user);

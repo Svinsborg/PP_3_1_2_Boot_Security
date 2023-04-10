@@ -1,9 +1,6 @@
 package ru.kata.spring.boot_security.demo.dto;
 
-
-
 import ru.kata.spring.boot_security.demo.model.Role;
-
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

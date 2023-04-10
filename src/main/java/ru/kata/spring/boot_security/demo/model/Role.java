@@ -16,7 +16,6 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String role;
 
-
     public Long getId() {
         return id;
     }
@@ -58,8 +57,6 @@ public class Role implements GrantedAuthority {
             return false;
         return true;
     }
-
-
 
     @Override
     public String getAuthority() {

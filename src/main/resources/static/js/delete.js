@@ -1,6 +1,6 @@
 $('#deletUser').on('shown.bs.modal', function (event){
-    let button = $(event.relatedTarget) // Button that triggered the modal
-    let userId = button.data('userid') // Extract info from data-* attributes
+    let button = $(event.relatedTarget)
+    let userId = button.data('userid')
 
     if (userId) {
         $.get({

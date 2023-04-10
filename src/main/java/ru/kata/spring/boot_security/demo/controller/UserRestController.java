@@ -11,8 +11,6 @@ import java.security.Principal;
 import java.util.Optional;
 
 
-
-
 @RestController
 @RequestMapping("/api/v2/user")
 public class UserRestController {

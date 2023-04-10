@@ -1,5 +1,4 @@
 async function show() {
-    console.log("Start content")
     const listUsers = document.querySelector('.list-users')
     let output = '';
     const url = '/api/v1/user'
@@ -8,7 +7,6 @@ async function show() {
         .then(res => res.json())
         .then(date => {
                 date.forEach(u => {
-                    console.log(u)
                     output += `
                     <tr>
                         <td>${u.id}</td>
@@ -49,10 +47,7 @@ async function showJq() {
     })
         .done(function (data) {
             let listUsersAjax = $('.list-users')
-            console.log(data)
-
             data.forEach(u => {
-                console.log(u.firstName)
                 listUsersAjax.append(
                     `<tr>
                         <td>${u.id}</td>
@@ -81,7 +76,6 @@ async function showJq() {
                     </tr>`
                 )
             })
-
         })
         .fail(function () {
             alert("error");
@@ -95,16 +89,13 @@ async function showAjax() {
         type: "get",
         cache: false,
         success:(function (data) {
-            console.log(data)
             data.forEach(u => {
-                console.log(u.firstName)
                 $('.list-users').append(
                     `<tr>
                         <td>${u.id}</td>
                         <td>${u.firstName}</td>
                         <td>${u.lastName}</td>
-                        <td>${u.roles.map(role => " " + role.role)}</td>
-                
+                        <td>${u.roles.map(role => " " + role.role)}</td>                
                         <td>
                             <button type="button" class="btn btn-info"                                    
                                     data-bs-toggle="modal"
